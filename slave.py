@@ -1,6 +1,6 @@
 import socket
 import time
-HOST = '192.168.0.19'  # The server's hostname or IP address
+HOST = '150.162.49.40'  # The server's hostname or IP address
 PORT = 65434        # The port used by the server
 
 t1 = ""
@@ -29,7 +29,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("Received", repr(data))
     t1 = data.decode("utf-8").split(":")[1]
     print("Calculating delay 1")
-    delay1 = float(t2) - float(t1)
+    delay1 = float(t2) - float(t1) 
     print("Delay 1: "+str(delay1))
 
     #SEND DELAY REQUEST
@@ -44,4 +44,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     t4 = data.decode("utf-8").split(":")[1]
     delay2 = float(t4) - t3
     err = (delay1+delay2)/2
-    print("Error: "+str(err))
+    offset = (delay1 - delay2)/2
+    print("Delay: "+str(err))
+    print("Offset: "+str(offset))
+    teste = time.time() + offset
+    print(time.ctime(teste))
+    print(time.ctime(float(t1)))
