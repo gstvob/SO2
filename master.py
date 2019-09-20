@@ -2,7 +2,7 @@ import socket
 import time
 
 HOST = '192.168.0.19'  # Standard loopback interface address (localhost)
-PORT = 65433        # Port to listen on (non-privileged ports are > 1023)
+PORT = 65434        # Port to listen on (non-privileged ports are > 1023)
 
 currState = 0
 
@@ -23,5 +23,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print("Sending FOLLOW_UP with t1 = " + str(t1))
             data = conn.recv(1024)
             print('received delay req')
-            conn.sendall(b'DELAY_RES')
-
+            t4 = time.time()
+            delay_res = 'DELAY_RES:' + str(t4)
+            conn.sendall(bytes(delay_res, "utf-8"))
