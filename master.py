@@ -4,8 +4,6 @@ import time
 HOST = '192.168.0.19'  # Standard loopback interface address (localhost)
 PORT = 65434        # Port to listen on (non-privileged ports are > 1023)
 
-currState = 0
-
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
