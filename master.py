@@ -1,8 +1,8 @@
 import socket
 import time
 
-HOST = '192.168.0.19'  # Standard loopback interface address (localhost)
-PORT = 65434        # Port to listen on (non-privileged ports are > 1023)
+HOST = '150.162.50.74'  # Standard loopback interface address (localhost)
+PORT = 65444        # Port to listen on (non-privileged ports are > 1023)
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -24,3 +24,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             t4 = time.time()
             delay_res = 'DELAY_RES:' + str(t4)
             conn.sendall(bytes(delay_res, "utf-8"))
+
+            data = conn.recv(2014)
+            if data == b'START_TEST':
+                for i in range(1000):
+                    conn.sendall(bytes(str(time.time()),'utf-8'))
+                    data = conn.recv(2014)
+                    if data == b'SEND_NEXT':
+                        continue
+            #print(str(time.time()))
+            #conn.sendall(bytes(str(time.time()), "utf-8"))
