@@ -1,14 +1,17 @@
 import socket
 import time
-HOST ='192.168.0.19'  # The server's hostname or IP address
-PORT = 65434        # The port used by the server
+#from matplotlib import pyplot
+
+HOST ='150.162.50.74'  # The server's hostname or IP address
+PORT = 65444    # The port used by the server
 
 t1 = ""
 t2 = ""
 t3 = ""
 t4 = ""
 
-
+errors = []
+indexes = []
 #print(time.get_clock_info('time').implementation)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -47,5 +50,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     print("TEST")
     test_time = t2 - offset
     print("T1 = %s, T2 = %s" % (t1, str(t2)))
-    print(time.ctime(float(t1)))
-    print(time.ctime(t2))
+    
+    s.sendall(b'START_TEST')
+    for i in range(1000):
+        data = s.recv(1024)
+        print(data)
+        slave_time = time.time() - offset
+        master_time = float(data.decode("utf-8"))
+        errors.append(abs(master_time-slave_time))
+        indexes.append(i)
+        s.sendall(b'SEND_NEXT')
+
+#pyplot.plot(indexes, errors)
+#pyplot.show()
